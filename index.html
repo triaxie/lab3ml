@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sentiment Analyzer</title>
+</head>
+<body>
+    <h2>Enter a sentence:</h2>
+    <input type="text" id="userInput">
+    <button onclick="analyzeText()">Analyze</button>
+    <p id="result"></p>
+
+    <script>
+        async function analyzeText() {
+            const text = document.getElementById("userInput").value;
+            try {
+                const response = await fetch("http://127.0.0.1:8000/analyze/", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ text: text })
+                });
+
+                // Eğer yanıt başarılı değilse hata mesajı göster
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                // Yanıtı JSON olarak çözümleyin
+                const data = await response.json();
+
+                // Sonucu ekranda gösterin
+                document.getElementById("result").innerText = `Sentiment: ${data.label}, Score: ${data.score.toFixed(2)}`;
+            } catch (error) {
+                // Hata durumunda ekranda hata mesajı gösterin
+                document.getElementById("result").innerText = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
