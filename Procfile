@@ -1,1 +1,1 @@
-web: uvicorn lab3_ml.py:app --host=0.0.0.0 --port=8000
+web: python lab3_ml.py
