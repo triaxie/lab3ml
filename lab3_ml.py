@@ -11,7 +11,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  
+    allow_methods=["*"], 
     allow_headers=["*"],  
 )
 
@@ -26,5 +26,4 @@ def analyze_text(input_data: TextInput):
     return {"label": result[0]['label'], "score": result[0]['score']}
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
