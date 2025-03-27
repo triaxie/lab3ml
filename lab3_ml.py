@@ -1,17 +1,26 @@
+import uvicorn
+import os
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline
 from fastapi.middleware.cors import CORSMiddleware
 
+@app.get("/")
+def read_root():
+    return {"message": "Hello, Heroku!"}
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
 app = FastAPI()
 
-# CORS ayarlarını ekleyin
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # İhtiyaç duyduğunuz URL'yi buraya ekleyebilirsiniz
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Herhangi bir HTTP methodunu kabul et
-    allow_headers=["*"],  # Herhangi bir header'ı kabul et
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 classifier = pipeline("text-classification", model="distilbert-base-uncased-finetuned-sst-2-english")
